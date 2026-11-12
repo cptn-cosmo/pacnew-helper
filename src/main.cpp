@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     screenshotOption.setFlags(QCommandLineOption::HiddenFromHelp);
     QCommandLineOption openOption(u"open"_s, u"Open <path> for review after scanning."_s, u"path"_s);
     openOption.setFlags(QCommandLineOption::HiddenFromHelp);
-    QCommandLineOption pageOption(u"page"_s, u"Show <page> (history, about) after scanning."_s, u"page"_s);
+    QCommandLineOption pageOption(u"page"_s, u"Show <page> (history, about, summary:<action>) after scanning."_s, u"page"_s);
     pageOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOptions({screenshotOption, openOption, pageOption});
     parser.process(app);

@@ -58,6 +58,20 @@ public:
     Q_INVOKABLE void reloadHistory();
     Q_INVOKABLE void restoreBackup(const QString &backupId);
 
+    // Nothing is written without approval: the UI first shows preview() for an
+    // action, and only runs execute() with the same arguments once the user
+    // approved it. Actions: "apply" (the current choices), "replace", "keep",
+    // "delete", "restore-leftover" (current file), "keep-all" (bulk) and
+    // "undo" (arg = backup id).
+    //
+    // The preview is a map with
+    //   title, actionText (button), bullets (list of sentences), and
+    //   items: list of {path, heading, note, added, removed, rows}, where rows
+    //   is the change to the file on disk: {type: context|removed|added|gap,
+    //   text, oldLine, newLine, count}.
+    Q_INVOKABLE QVariantMap preview(const QString &action, const QString &arg = {});
+    Q_INVOKABLE void execute(const QString &action, const QString &arg = {});
+
 Q_SIGNALS:
     void scanningChanged();
     void busyChanged();

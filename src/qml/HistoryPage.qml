@@ -10,8 +10,6 @@ import gay.geeks.pacnewhelper.app
 Kirigami.ScrollablePage {
     id: page
 
-    property string pendingId
-
     title: i18nc("@title", "History")
 
     Component.onCompleted: App.reloadHistory()
@@ -66,11 +64,7 @@ Kirigami.ScrollablePage {
                     icon.name: "edit-undo"
                     text: i18nc("@action:button", "Undo")
                     enabled: !App.busy
-                    onClicked: {
-                        page.pendingId = delegate.backupId;
-                        undoDialog.subtitle = i18n("%1 is put back exactly as it was before this change.", delegate.path);
-                        undoDialog.open();
-                    }
+                    onClicked: applicationWindow().confirmChange("undo", delegate.backupId)
                 }
             }
         }
@@ -83,12 +77,5 @@ Kirigami.ScrollablePage {
             text: i18n("No changes yet")
             explanation: i18n("Files you update with Pacnew Helper will be listed here.")
         }
-    }
-
-    Kirigami.PromptDialog {
-        id: undoDialog
-        title: i18nc("@title:dialog", "Undo this change?")
-        standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
-        onAccepted: App.restoreBackup(page.pendingId)
     }
 }

@@ -63,7 +63,7 @@ Kirigami.ScrollablePage {
                 text: page.pacsave ? i18nc("@action:button", "Remove Saved Settings") : i18nc("@action:button", "Remove New Version")
                 highlighted: page.pacsave
                 enabled: !App.busy
-                onClicked: removeDialog.open()
+                onClicked: applicationWindow().confirmChange(page.pacsave ? "delete" : "keep")
             }
             QQC2.Button {
                 visible: !page.info.liveExists
@@ -71,7 +71,7 @@ Kirigami.ScrollablePage {
                 text: page.pacsave ? i18nc("@action:button", "Put Back in Place") : i18nc("@action:button", "Put New Version in Place")
                 highlighted: !page.pacsave
                 enabled: !App.busy
-                onClicked: page.pacsave ? App.restoreLeftover() : App.useNew()
+                onClicked: applicationWindow().confirmChange(page.pacsave ? "restore-leftover" : "replace")
             }
         }
 
@@ -90,13 +90,5 @@ Kirigami.ScrollablePage {
             font.family: "monospace"
             wrapMode: TextEdit.Wrap
         }
-    }
-
-    Kirigami.PromptDialog {
-        id: removeDialog
-        title: page.pacsave ? i18nc("@title:dialog", "Remove saved settings?") : i18nc("@title:dialog", "Remove the new version?")
-        subtitle: i18n("A backup is kept. You can undo this at any time from History.")
-        standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
-        onAccepted: page.pacsave ? App.deleteLeftover() : App.keepMine()
     }
 }

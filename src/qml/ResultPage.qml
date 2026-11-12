@@ -24,7 +24,7 @@ Kirigami.ScrollablePage {
         icon.name: "dialog-ok-apply"
         text: i18nc("@action:button", "Apply")
         enabled: !App.busy
-        onTriggered: confirm.open()
+        onTriggered: applicationWindow().confirmChange("apply")
     }
 
     header: QQC2.Label {
@@ -40,13 +40,5 @@ Kirigami.ScrollablePage {
         font.family: "monospace"
         wrapMode: TextEdit.NoWrap
         selectByMouse: true
-    }
-
-    Kirigami.PromptDialog {
-        id: confirm
-        title: i18nc("@title:dialog", "Update %1?", App.current.fileName ?? "")
-        subtitle: i18n("A backup is kept. You can undo this at any time from History.")
-        standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
-        onAccepted: App.applyChoices()
     }
 }

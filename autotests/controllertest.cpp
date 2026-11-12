@@ -87,6 +87,50 @@ private Q_SLOTS:
         QTRY_COMPARE_WITH_TIMEOUT(c.files()->count(), 6, 10000); // rescanned
     }
 
+    void previewShowsExactlyWhatWillBeWritten()
+    {
+        Controller c(m_root);
+        scan(c);
+        c.open(u"/etc/pacman.conf"_s, u"pacnew"_s);
+        const QVariantMap p = c.preview(u"apply"_s);
+        QVERIFY(!p.value(u"title"_s).toString().isEmpty());
+        QVERIFY(p.value(u"bullets"_s).toList().size() >= 3);
+        const QVariantList items = p.value(u"items"_s).toList();
+        QCOMPARE(items.size(), 1);
+        const QVariantMap file = items.first().toMap();
+        QCOMPARE(file.value(u"path"_s).toString(), u"/etc/pacman.conf"_s);
+        QCOMPARE(file.value(u"added"_s).toInt(), 2); // DownloadUser, #DisableSandbox
+        QCOMPARE(file.value(u"removed"_s).toInt(), 0); // user's settings all kept
+        QStringList added;
+        for (const QVariant &row : file.value(u"rows"_s).toList()) {
+            if (row.toMap().value(u"type"_s).toString() == u"added")
+                added << row.toMap().value(u"text"_s).toString();
+        }
+        QCOMPARE(added, (QStringList{u"DownloadUser = alpm"_s, u"#DisableSandbox"_s}));
+
+        // Previewing writes nothing.
+        QVERIFY(exists(u"/etc/pacman.conf.pacnew"_s));
+        QVERIFY(!read(u"/etc/pacman.conf"_s).contains("DownloadUser"));
+
+        // Replace shows the user's lines that would be lost.
+        const QVariantMap r = c.preview(u"replace"_s).value(u"items"_s).toList().first().toMap();
+        QVERIFY(r.value(u"removed"_s).toInt() >= 4); // Color, VerbosePkgLists, ParallelDownloads=10, chaotic-aur...
+
+        // Bulk: one entry per file, with the reason.
+        QCOMPARE(c.preview(u"keep-all"_s).value(u"items"_s).toList().size(), 2);
+
+        // Approving runs the very same action.
+        QSignalSpy finished(&c, &Controller::finished);
+        c.execute(u"apply"_s);
+        QTRY_COMPARE_WITH_TIMEOUT(finished.count(), 1, 5000);
+        QVERIFY(read(u"/etc/pacman.conf"_s).contains("DownloadUser = alpm"));
+
+        // Undo has a preview too.
+        c.reloadHistory();
+        const QString id = c.history()->data(c.history()->index(0), HistoryModel::IdRole).toString();
+        QVERIFY(!c.preview(u"undo"_s, id).value(u"items"_s).toList().isEmpty());
+    }
+
     void keepAllUnchanged()
     {
         Controller c(m_root);

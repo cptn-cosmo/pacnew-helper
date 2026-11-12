@@ -76,7 +76,7 @@ Kirigami.ScrollablePage {
                 icon.name: "dialog-ok-apply"
                 text: i18nc("@action:button", "Keep and Tidy Up")
                 enabled: !App.busy
-                onTriggered: App.keepAllUnchanged()
+                onTriggered: applicationWindow().confirmChange("keep-all")
             }
         }
     }

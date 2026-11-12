@@ -43,6 +43,12 @@ Kirigami.ApplicationWindow {
             pageStack.push(reviewComponent);
     }
 
+    // Every change goes through the summary page; nothing is written before
+    // the user approved it there.
+    function confirmChange(action: string, arg: string) {
+        pageStack.push(summaryComponent, { action: action, arg: arg ?? "" });
+    }
+
     function showHistory() {
         while (pageStack.depth > 1)
             pageStack.pop();
@@ -85,6 +91,9 @@ Kirigami.ApplicationWindow {
             if (root.startPath.length > 0) {
                 const kind = root.startPath.endsWith(".pacsave") ? "pacsave" : "pacnew";
                 root.openFile(root.startPath.replace(/\.(pacnew|pacsave)$/, ""), kind);
+            }
+            if (root.startPage.startsWith("summary:")) {
+                root.confirmChange(root.startPage.slice(8), "");
             } else if (root.startPage === "history") {
                 root.showHistory();
             } else if (root.startPage === "about") {
@@ -106,6 +115,19 @@ Kirigami.ApplicationWindow {
     Component {
         id: resultComponent
         ResultPage {}
+    }
+    Component {
+        id: summaryComponent
+        SummaryPage {
+            id: summaryPage
+            onCancelled: root.pageStack.pop()
+            onApproved: {
+                // Single-file actions close their pages once finished (see
+                // onFinished); bulk actions and undo report via a message.
+                if (summaryPage.action === "keep-all" || summaryPage.action === "undo")
+                    root.pageStack.pop();
+            }
+        }
     }
     Component {
         id: historyComponent

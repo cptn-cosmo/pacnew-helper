@@ -32,6 +32,7 @@ qt_add_qml_module(pacnew-helper
         qml/ChangeCard.qml
         qml/DiffPane.qml
         qml/ResultPage.qml
+        qml/SummaryPage.qml
         qml/HistoryPage.qml
         qml/StatTile.qml
     SOURCES

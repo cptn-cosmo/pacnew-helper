@@ -25,7 +25,7 @@ Kirigami.ScrollablePage {
             tooltip: i18n("Save the file with the choices below")
             visible: page.writable && page.hasChanges
             enabled: !App.busy
-            onTriggered: applyDialog.open()
+            onTriggered: applicationWindow().confirmChange("apply")
         },
         Kirigami.Action {
             icon.name: "document-preview"
@@ -46,7 +46,7 @@ Kirigami.ScrollablePage {
             visible: page.info.readable !== false
             enabled: !App.busy
             displayHint: Kirigami.DisplayHint.AlwaysHide
-            onTriggered: keepDialog.open()
+            onTriggered: applicationWindow().confirmChange("keep")
         },
         Kirigami.Action {
             icon.name: "document-new"
@@ -54,7 +54,7 @@ Kirigami.ScrollablePage {
             visible: page.writable
             enabled: !App.busy
             displayHint: Kirigami.DisplayHint.AlwaysHide
-            onTriggered: replaceDialog.open()
+            onTriggered: applicationWindow().confirmChange("replace")
         }
     ]
 
@@ -98,7 +98,7 @@ Kirigami.ScrollablePage {
                 icon.name: "edit-clear-all"
                 text: i18nc("@action:button", "Remove Extra Copy")
                 enabled: !App.busy
-                onTriggered: App.keepMine()
+                onTriggered: applicationWindow().confirmChange("keep")
             }
         }
 
@@ -115,7 +115,7 @@ Kirigami.ScrollablePage {
                 icon.name: "user-home"
                 text: i18nc("@action:button", "Keep My Version")
                 enabled: !App.busy
-                onTriggered: App.keepMine()
+                onTriggered: applicationWindow().confirmChange("keep")
             }
         }
 
@@ -144,7 +144,7 @@ Kirigami.ScrollablePage {
                 icon.name: "user-home"
                 text: i18nc("@action:button", "Keep My Version")
                 enabled: !App.busy
-                onTriggered: App.keepMine()
+                onTriggered: applicationWindow().confirmChange("keep")
             }
         }
 
@@ -198,7 +198,7 @@ Kirigami.ScrollablePage {
                 text: page.changes.resultIsMine ? i18nc("@action:button", "Keep My Version") : i18nc("@action:button", "Apply These Choices")
                 highlighted: true
                 enabled: !App.busy
-                onClicked: applyDialog.open()
+                onClicked: applicationWindow().confirmChange("apply")
             }
             QQC2.Button {
                 icon.name: "document-preview"
@@ -272,39 +272,5 @@ Kirigami.ScrollablePage {
                 }
             }
         }
-    }
-
-    // --- confirmations ------------------------------------------------------
-    Kirigami.PromptDialog {
-        id: applyDialog
-        title: i18nc("@title:dialog", "Update %1?", page.info.fileName ?? "")
-        subtitle: (page.changes.resultIsMine
-                   ? i18n("Your file stays exactly as it is and the extra copy is removed.")
-                   : i18np("1 change from the new version will be applied. Everything else stays as it is.",
-                           "%1 changes from the new version will be applied. Everything else stays as it is.",
-                           page.changes.takingNewCount))
-                  + "\n\n" + i18n("A backup is kept. You can undo this at any time from History.")
-        standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
-        onAccepted: App.applyChoices()
-    }
-
-    Kirigami.PromptDialog {
-        id: keepDialog
-        title: i18nc("@title:dialog", "Keep your version?")
-        subtitle: i18n("Your file stays exactly as it is. The new version is removed, so you won't get its improvements.")
-                  + "\n\n" + i18n("A backup is kept. You can undo this at any time from History.")
-        standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
-        onAccepted: App.keepMine()
-    }
-
-    Kirigami.PromptDialog {
-        id: replaceDialog
-        title: i18nc("@title:dialog", "Use the new version?")
-        subtitle: (page.changes.localCount + page.changes.decisionCount > 0
-                   ? i18n("Your file is replaced by the new version. Your own changes in this file will be lost.")
-                   : i18n("Your file is replaced by the new version."))
-                  + "\n\n" + i18n("A backup is kept. You can undo this at any time from History.")
-        standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
-        onAccepted: App.useNew()
     }
 }
