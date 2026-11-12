@@ -1,13 +1,13 @@
 # Maintainer: CPTN Cosmo <cosmo@geeks.gay>
 pkgname=pacnew-helper
-pkgver=0.1.0
+pkgver=0.1.0.r1.gddfe29e
 pkgrel=1
 pkgdesc='Review and apply .pacnew configuration updates, explained in plain language (Qt 6 / Kirigami)'
 arch=('x86_64' 'aarch64')
 url='https://github.com/cptn-cosmo/pacnew-helper'
 license=('GPL-3.0-or-later')
 depends=(
-  'gcc-libs'
+  'libstdc++'
   'glibc'
   'hicolor-icon-theme'
   'kauth'
