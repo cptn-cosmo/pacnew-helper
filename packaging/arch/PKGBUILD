@@ -1,13 +1,18 @@
 # Maintainer: CPTN Cosmo <cosmo@geeks.gay>
+#
+# Release builds of https://github.com/cptn-cosmo/pacnew-helper.
+# To publish a release: tag vX.Y.Z, attach `git archive` of the tag as
+# pacnew-helper-X.Y.Z.tar.gz to the GitHub release, then bump pkgver here,
+# reset pkgrel=1 and run updpkgsums.
+
 pkgname=pacnew-helper
-pkgver=0.1.0.r1.gddfe29e
+pkgver=0.1.0
 pkgrel=1
 pkgdesc='Review and apply .pacnew configuration updates, explained in plain language (Qt 6 / Kirigami)'
 arch=('x86_64' 'aarch64')
 url='https://github.com/cptn-cosmo/pacnew-helper'
 license=('GPL-3.0-or-later')
 depends=(
-  'libstdc++'
   'glibc'
   'hicolor-icon-theme'
   'kauth'
@@ -19,32 +24,30 @@ depends=(
   'kirigami'
   'kirigami-addons'
   'libarchive'
+  'libstdc++'
   'pacman'
   'polkit'
   'qqc2-desktop-style'
   'qt6-base'
   'qt6-declarative'
 )
-makedepends=('cmake' 'extra-cmake-modules' 'git' 'ninja')
-# Builds the committed state of this repository. Once published, switch to:
-# source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-source=("$pkgname::git+file://${startdir}/../..")
+makedepends=('cmake' 'extra-cmake-modules' 'ninja')
+source=("${pkgname}-${pkgver}.tar.gz::${url}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
-pkgver() {
-  cd "$pkgname"
-  printf '%s.r%s.g%s' "$(sed -n 's/^project(pacnew-helper VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)" \
-    "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
-
 build() {
-  cmake -B build -S "$pkgname" -G Ninja \
-    -DCMAKE_INSTALL_PREFIX=/usr \
+  cmake -B build -S "${pkgname}-${pkgver}" -G Ninja \
     -DCMAKE_BUILD_TYPE=None \
-    -DBUILD_TESTING=OFF
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTING=ON \
+    -Wno-dev
   cmake --build build
 }
 
+check() {
+  QT_QPA_PLATFORM=offscreen ctest --test-dir build --output-on-failure
+}
+
 package() {
-  DESTDIR="$pkgdir" cmake --install build
+  DESTDIR="${pkgdir}" cmake --install build
 }

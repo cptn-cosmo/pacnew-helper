@@ -55,12 +55,18 @@ The app runs as your user. Only the actual changes go through a small **KAuth he
 
 ### Arch / CachyOS package
 
+From the `[geeks.gay]` repository (`repo.geeks.gay`):
+
+```sh
+sudo pacman -S pacnew-helper
+```
+
+Or build the latest release yourself with the PKGBUILD in `packaging/arch/`:
+
 ```sh
 cd packaging/arch
 makepkg -si
 ```
-
-The PKGBUILD builds the current commit of this repository. Once the project is published, it can be switched to release tarballs like the other packages.
 
 ### Build from source
 
