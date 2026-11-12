@@ -1,0 +1,22 @@
+[Domain]
+Name=Pacnew Helper
+Icon=gay.geeks.pacnewhelper
+URL=https://github.com/cptn-cosmo/pacnew-helper
+
+[gay.geeks.pacnewhelper.apply]
+Name=Update a system configuration file
+Description=Changing a system configuration file requires administrator privileges.
+Policy=auth_admin
+Persistence=session
+
+[gay.geeks.pacnewhelper.read]
+Name=Read a protected configuration file
+Description=Showing this protected configuration file requires administrator privileges.
+Policy=auth_admin
+Persistence=session
+
+[gay.geeks.pacnewhelper.restore]
+Name=Undo a configuration file change
+Description=Restoring a configuration file from a backup requires administrator privileges.
+Policy=auth_admin
+Persistence=session

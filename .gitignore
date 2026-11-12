@@ -1,0 +1,8 @@
+build/
+*.user
+.qmlls.ini
+
+# makepkg output
+packaging/arch/*
+!packaging/arch/PKGBUILD
+compile_commands.json

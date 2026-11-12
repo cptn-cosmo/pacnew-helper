@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<component type="desktop-application">
+  <id>gay.geeks.pacnewhelper</id>
+  <launchable type="desktop-id">gay.geeks.pacnewhelper.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Pacnew Helper</name>
+  <summary>Review and apply updated system configuration files</summary>
+  <description>
+    <p>
+      When a package update brings a new version of a configuration file you changed, pacman keeps your file and saves the
+      new one next to it as .pacnew. Pacnew Helper finds these files and helps you bring in the improvements without losing
+      your own settings, explained in plain language.
+    </p>
+    <ul>
+      <li>Three-way merge using the previous package version from the pacman cache: updates from the package are taken, your own changes are kept, only real conflicts need a decision</li>
+      <li>Side-by-side view of every difference with a recommended choice</li>
+      <li>Explanations and safety rules for important files (user accounts, sudoers, fstab, boot settings)</li>
+      <li>Automatic backups before every change and one-click undo</li>
+      <li>Handles leftover .pacsave files of removed packages</li>
+    </ul>
+  </description>
+  <categories>
+    <category>System</category>
+    <category>Settings</category>
+  </categories>
+  <url type="homepage">https://github.com/cptn-cosmo/pacnew-helper</url>
+  <developer id="gay.geeks">
+    <name>CPTN Cosmo</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-11-12"/>
+  </releases>
+</component>

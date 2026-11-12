@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+  <defs>
+    <linearGradient id="page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fcfcfc"/>
+      <stop offset="1" stop-color="#e3e5e7"/>
+    </linearGradient>
+  </defs>
+  <!-- back document (the new version) -->
+  <path d="M22 6h22l10 10v34a3 3 0 0 1-3 3H22a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" fill="#3daee9"/>
+  <path d="M44 6v7a3 3 0 0 0 3 3h7z" fill="#1d99f3"/>
+  <!-- front document (your file) -->
+  <path d="M13 14h22l10 10v31a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V17a3 3 0 0 1 3-3z" fill="url(#page)" stroke="#bdc3c7" stroke-width="1"/>
+  <path d="M35 14v7a3 3 0 0 0 3 3h7z" fill="#bdc3c7"/>
+  <!-- lines: kept (grey), added (green), removed (red) -->
+  <rect x="16" y="28" width="22" height="3" rx="1.5" fill="#7f8c8d"/>
+  <rect x="16" y="34" width="18" height="3" rx="1.5" fill="#27ae60"/>
+  <rect x="16" y="40" width="22" height="3" rx="1.5" fill="#7f8c8d"/>
+  <rect x="16" y="46" width="14" height="3" rx="1.5" fill="#da4453"/>
+  <!-- check badge -->
+  <circle cx="48" cy="50" r="10" fill="#27ae60"/>
+  <path d="M43.5 50.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

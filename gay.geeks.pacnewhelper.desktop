@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Name=Pacnew Helper
+GenericName=Configuration File Updates
+Comment=Review and apply updated system configuration files
+Exec=pacnew-helper
+Icon=gay.geeks.pacnewhelper
+Terminal=false
+Categories=Qt;KDE;System;Settings;
+Keywords=pacnew;pacsave;pacdiff;configuration;config;merge;update;etc;pacman;
+StartupNotify=true
+StartupWMClass=pacnew-helper
+SingleMainWindow=true
+X-DBUS-StartupType=Unique
+X-DBUS-ServiceName=gay.geeks.pacnewhelper
+X-KDE-StartupNotify=true

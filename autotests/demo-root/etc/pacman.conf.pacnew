@@ -1,0 +1,27 @@
+#
+# /etc/pacman.conf
+#
+# See the pacman.conf(5) manpage for option directives
+
+[options]
+HoldPkg     = pacman glibc
+Architecture = auto
+
+# Misc options
+#UseSyslog
+#Color
+#NoProgressBar
+CheckSpace
+#VerbosePkgLists
+ParallelDownloads = 5
+DownloadUser = alpm
+#DisableSandbox
+
+SigLevel    = Required DatabaseOptional
+LocalFileSigLevel = Optional
+
+[core]
+Include = /etc/pacman.d/mirrorlist
+
+[extra]
+Include = /etc/pacman.d/mirrorlist

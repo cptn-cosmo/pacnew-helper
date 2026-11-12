@@ -1,0 +1,50 @@
+# Maintainer: CPTN Cosmo <cosmo@geeks.gay>
+pkgname=pacnew-helper
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Review and apply .pacnew configuration updates, explained in plain language (Qt 6 / Kirigami)'
+arch=('x86_64' 'aarch64')
+url='https://github.com/cptn-cosmo/pacnew-helper'
+license=('GPL-3.0-or-later')
+depends=(
+  'gcc-libs'
+  'glibc'
+  'hicolor-icon-theme'
+  'kauth'
+  'kcoreaddons'
+  'kcrash'
+  'kdbusaddons'
+  'ki18n'
+  'kiconthemes'
+  'kirigami'
+  'kirigami-addons'
+  'libarchive'
+  'pacman'
+  'polkit'
+  'qqc2-desktop-style'
+  'qt6-base'
+  'qt6-declarative'
+)
+makedepends=('cmake' 'extra-cmake-modules' 'git' 'ninja')
+# Builds the committed state of this repository. Once published, switch to:
+# source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+source=("$pkgname::git+file://${startdir}/../..")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$pkgname"
+  printf '%s.r%s.g%s' "$(sed -n 's/^project(pacnew-helper VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)" \
+    "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cmake -B build -S "$pkgname" -G Ninja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None \
+    -DBUILD_TESTING=OFF
+  cmake --build build
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}
